@@ -1,49 +1,40 @@
-import express, { Request, Response } from 'express';
-import swaggerJsDoc, { Options as SwaggerOptions } from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
-import bp from 'body-parser';
-
-const app = express();
-const PORT: number = 3000;
-
-app.use(bp.json())
-app.use(bp.urlencoded({ extended: true }))
-
-// Swagger options
-const swaggerOptions: SwaggerOptions = {
-  swaggerDefinition: {
-    openapi: "3.1.0",
-    info: {
-      title: 'Node.js Course Practice API',
-      description: 'API for the Node.js Course Practice project',
-      version: '1.0.0',
-      license: {
-        name: "MIT",
-        url: "https://spdx.org/licenses/MIT.html",
-      },
-      contact: {
-        name: "Serhii Ulianchenko",
-        email: "ulianchenko@gmail.com",
-      },
-    },
-  },
-  // API routes
-  apis: ['./src/*.ts'],
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-
-const swaggerSpec = swaggerJsDoc(swaggerOptions);
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const body_parser_1 = __importDefault(require("body-parser"));
+const app = (0, express_1.default)();
+const PORT = 3000;
+app.use(body_parser_1.default.json());
+app.use(body_parser_1.default.urlencoded({ extended: true }));
+// Swagger options
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: "3.1.0",
+        info: {
+            title: 'Node.js Course Practice API',
+            description: 'API for the Node.js Course Practice project',
+            version: '1.0.0',
+            license: {
+                name: "MIT",
+                url: "https://spdx.org/licenses/MIT.html",
+            },
+            contact: {
+                name: "Serhii Ulianchenko",
+                email: "ulianchenko@gmail.com",
+            },
+        },
+    },
+    // API routes
+    apis: ['./src/*.ts'],
+};
+const swaggerSpec = (0, swagger_jsdoc_1.default)(swaggerOptions);
 // Serve Swagger UI at /api-docs
-app.use('/api-docs',
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec)
-);
-
-interface Item {
-  id: number;
-  name: string;
-}
-
+app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerSpec));
 /**
  * @swagger
  * components:
@@ -59,12 +50,10 @@ interface Item {
  *       example:
  *         name: Best item
  */
-
 // Route for the root URL
-app.get('/', (req: Request, res: Response): void => {
-  res.send('Hello World!');
+app.get('/', (req, res) => {
+    res.send('Hello World!');
 });
-
 // Route for the health-check endpoint
 /**
  * @swagger
@@ -84,10 +73,9 @@ app.get('/', (req: Request, res: Response): void => {
  *                   type: string
  *                   example: Server is running
  */
-app.get('/health-check', (req: Request, res: Response): void => {
-  res.json({ status: 'Server is running' });
+app.get('/health-check', (req, res) => {
+    res.json({ status: 'Server is running' });
 });
-
 // Route for the items
 /**
  * @swagger
@@ -110,15 +98,14 @@ app.get('/health-check', (req: Request, res: Response): void => {
  *                   name:
  *                     type: string
  */
- app.get('/items', (req: Request, res: Response): void => {
-  const items: Item[] = [
-    { id: 1, name: 'Book' },
-    { id: 2, name: 'Phone' },
-    { id: 2, name: 'Laptop' }
-  ];
-  res.json(items);
+app.get('/items', (req, res) => {
+    const items = [
+        { id: 1, name: 'Book' },
+        { id: 2, name: 'Phone' },
+        { id: 2, name: 'Laptop' }
+    ];
+    res.json(items);
 });
-
 /**
  * @swagger
  * /items:
@@ -144,14 +131,13 @@ app.get('/health-check', (req: Request, res: Response): void => {
  *                 name:
  *                   type: string
  */
- app.post('/items', (req: Request, res: Response): void => {
-  const newItem: Item = {
-    id: Date.now(),
-    name: req.body.name,
-  };
-  res.json(newItem);
+app.post('/items', (req, res) => {
+    const newItem = {
+        id: Date.now(),
+        name: req.body.name,
+    };
+    res.json(newItem);
 });
-
 /**
  * @swagger
  * /items/{id}:
@@ -177,24 +163,20 @@ app.get('/health-check', (req: Request, res: Response): void => {
  *                 message:
  *                   type: string
  */
- app.delete('/items/:id', (req: Request, res: Response): void => {
-  const itemId: number = parseInt(req.params.id);
-
-  res.json({ message: `Item with ID ${itemId} was deleted successfully` });
+app.delete('/items/:id', (req, res) => {
+    const itemId = parseInt(req.params.id);
+    res.json({ message: `Item with ID ${itemId} was deleted successfully` });
 });
-
 // Middleware for handling 404 error
-app.use((req: Request, res: Response): void => {
-  res.status(404).json({ error: 'Not Found' });
+app.use((req, res) => {
+    res.status(404).json({ error: 'Not Found' });
 });
-
 // Middleware for handling 500 error
-app.use((err: Error, req: Request, res: Response): void => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Internal Server Error' });
+app.use((err, req, res) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Internal Server Error' });
 });
-
 // Start server on port 3000
 app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+    console.log(`Server listening on port ${PORT}`);
 });
