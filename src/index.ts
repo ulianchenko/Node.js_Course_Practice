@@ -1,16 +1,16 @@
-const express = require('express');
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
-const bp = require('body-parser');
+import express, { Request, Response } from 'express';
+import swaggerJsDoc, { Options as SwaggerOptions } from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import bp from 'body-parser';
 
 const app = express();
-const PORT = 3000;
+const PORT: number = 3000;
 
 app.use(bp.json())
 app.use(bp.urlencoded({ extended: true }))
 
 // Swagger options
-const swaggerOptions = {
+const swaggerOptions: SwaggerOptions = {
   swaggerDefinition: {
     openapi: "3.1.0",
     info: {
@@ -28,7 +28,7 @@ const swaggerOptions = {
     },
   },
   // API routes
-  apis: ['./src/*.js'],
+  apis: ['./src/*.ts'],
 };
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
@@ -38,6 +38,11 @@ app.use('/api-docs',
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec)
 );
+
+interface Item {
+  id: number;
+  name: string;
+}
 
 /**
  * @swagger
@@ -56,7 +61,7 @@ app.use('/api-docs',
  */
 
 // Route for the root URL
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response): void => {
   res.send('Hello World!');
 });
 
@@ -79,7 +84,7 @@ app.get('/', (req, res) => {
  *                   type: string
  *                   example: Server is running
  */
-app.get('/health-check', (req, res) => {
+app.get('/health-check', (req: Request, res: Response): void => {
   res.json({ status: 'Server is running' });
 });
 
@@ -105,8 +110,12 @@ app.get('/health-check', (req, res) => {
  *                   name:
  *                     type: string
  */
- app.get('/items', (req, res) => {
-  const items = [{ id: 1, name: 'Book' }, { id: 2, name: 'Phone' }, { id: 2, name: 'Laptop' }];
+ app.get('/items', (req: Request, res: Response): void => {
+  const items: Item[] = [
+    { id: 1, name: 'Book' },
+    { id: 2, name: 'Phone' },
+    { id: 2, name: 'Laptop' }
+  ];
   res.json(items);
 });
 
@@ -135,8 +144,8 @@ app.get('/health-check', (req, res) => {
  *                 name:
  *                   type: string
  */
- app.post('/items', (req, res) => {
-  const newItem = {
+ app.post('/items', (req: Request, res: Response): void => {
+  const newItem: Item = {
     id: Date.now(),
     name: req.body.name,
   };
@@ -168,19 +177,19 @@ app.get('/health-check', (req, res) => {
  *                 message:
  *                   type: string
  */
- app.delete('/items/:id', (req, res) => {
-  const itemId = parseInt(req.params.id);
+ app.delete('/items/:id', (req: Request, res: Response): void => {
+  const itemId: number = parseInt(req.params.id);
 
   res.json({ message: `Item with ID ${itemId} was deleted successfully` });
 });
 
 // Middleware for handling 404 error
-app.use((req, res, next) => {
+app.use((req: Request, res: Response): void => {
   res.status(404).json({ error: 'Not Found' });
 });
 
 // Middleware for handling 500 error
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response): void => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal Server Error' });
 });
