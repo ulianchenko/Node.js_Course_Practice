@@ -51,3 +51,31 @@ Please make sure to follow our [code of conduct](CODE_OF_CONDUCT.md).
 ## License
 
 This project is licensed under the [MIT License](LICENSE). You can find more details in the [LICENSE](LICENSE) file.
+
+## Running Tests
+
+To run tests for this project, [Jest](https://jestjs.io/) is used. Follow the steps below:
+
+1. Install Dependencies: Before running tests, make sure to install the necessary dependencies. Run the following command in your terminal:
+
+   ```bash
+   npm install
+
+2. Run Tests: Execute the following command to run the tests:
+
+    npm test
+
+  This will run Jest in watch mode, allowing you to interactively run tests and view results.
+
+3. Generate Coverage Report: To generate a coverage report, use the following command:
+
+    npm run test:coverage
+
+  This will create a coverage report in the coverage directory. Open coverage/index.html in your browser to view detailed coverage information.
+
+4. Interpret Results:
+
+  - Successful Tests: When all tests pass, you will see a summary in the terminal.
+  - Coverage Report: Open the coverage report to visualize which parts of your code are covered by tests.
+
+Feel free to explore Jest's documentation for more advanced testing features: Jest Documentation.

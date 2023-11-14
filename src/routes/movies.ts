@@ -124,8 +124,6 @@ router.delete('/movies/:id', validateMovieId, async (req: Request, res: Response
     const deletedMovie: IMovie | null = await Movie.findByIdAndRemove(req.params.id);
     res.json(deletedMovie);
   } catch (error) {
-    // console.log('Error was occured');
-    // res.status(500).json(error);
     next(error);
   }
 });
