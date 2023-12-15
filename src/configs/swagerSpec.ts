@@ -68,7 +68,7 @@ const swaggerOptions: SwaggerOptions = {
           example: {
             title: 'Interstellar',
             description: 'A team of explorers travel through a wormhole in space in an attempt to ensure humanity`s survival.',
-            releaseDate: '2014-11-07T12:00:00Z',
+            releaseDate: '2014-11-07T12:00:00.000Z',
             genre: ['Adventure', 'Drama', 'Sci-Fi']
           }
         },
